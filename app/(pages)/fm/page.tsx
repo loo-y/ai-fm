@@ -7,8 +7,11 @@ import { celebrities, emotionList } from '@/app/shared/constants';
 import _, { set } from 'lodash';
 import CustomIcon from '@/components/custom-icon';
 
-const vibes = ['Friendly', 'Professional', 'Calm', 'Mad Scientist', 'Sympathetic'];
-
+enum PLAY_STATUS {
+	PLAYING = 'STOP',
+	BUSY = 'BUSY',
+	READY = 'PLAY',
+}
 export default function Home() {
 	const voiceLength = celebrities.length + 1;
 	const voiceGridClass = `grid grid-cols-10 gap-3`;
@@ -17,7 +20,7 @@ export default function Home() {
 	const [darkMode, setDarkMode] = useState<boolean>(false);
 	const [mounted, setMounted] = useState<boolean>(false);
 	const [scriptText, setScriptText] = useState<string>('');
-	const [isBusy, setBusy] = useState<boolean>(false);
+	const [playStatus, setPlayStatus] = useState<PLAY_STATUS>(PLAY_STATUS.READY);
 	const [audioUrl, setAudioUrl] = useState<string | null>(null);
 	const scriptAudioRef = useRef<HTMLAudioElement>(null);
 
@@ -47,8 +50,16 @@ export default function Home() {
 	};
 
 	const handleGetAudio = async () => {
+		if (playStatus === PLAY_STATUS.BUSY) return;
+		if (playStatus === PLAY_STATUS.PLAYING) {
+			if (scriptAudioRef.current) {
+				scriptAudioRef.current.pause();
+				setPlayStatus(PLAY_STATUS.READY);
+			}
+			return;
+		}
 		if (!selectedVoice || !scriptText || !scriptText.trim()) return;
-		setBusy(true);
+		setPlayStatus(PLAY_STATUS.BUSY);
 		try {
 			const selectedCeleb = _.find(celebrities, (celeb) => celeb.id === selectedVoice);
 			if (!selectedCeleb) {
@@ -65,11 +76,14 @@ export default function Home() {
 			if (audioUrl && scriptAudioRef.current) {
 				scriptAudioRef.current.src = audioUrl;
 				scriptAudioRef.current.play();
+				setPlayStatus(PLAY_STATUS.PLAYING);
+			} else {
+				setPlayStatus(PLAY_STATUS.READY);
 			}
 		} catch (error) {
 			console.error('生成音频出错:', error);
+			setPlayStatus(PLAY_STATUS.READY);
 		} finally {
-			setBusy(false);
 		}
 	};
 
@@ -81,6 +95,13 @@ export default function Home() {
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
+		}
+	};
+
+	const handleUpdatePlayStatusAfterAudioEnd = () => {
+		console.log(`audio ended`);
+		if (playStatus === PLAY_STATUS.PLAYING) {
+			setPlayStatus(PLAY_STATUS.READY);
 		}
 	};
 
@@ -115,7 +136,8 @@ export default function Home() {
 							<div className="col-span-12 md:col-span-7 xl:col-span-6 order-3 md:order-2">
 								<div className="text-balance">
 									<div className="text-current/70 mb-3">
-										An interactive demo for developers to try the new text-to-speech model in the OpenAI API.
+										{`An interactive demo for developers to try text-to-speech model.`}
+										{`一个供开发者尝试文本到语音模型的互动演示。`}
 									</div>
 								</div>
 							</div>
@@ -212,12 +234,12 @@ Emotion: Warm and supportive, conveying empathy and care, ensuring the listener 
 									</div>
 								</div>
 							</div>
-							<div className="flex flex-1 flex-col shrink-0 mb-10 ">
+							<div className="flex flex-1 flex-col shrink-0 mb-10">
 								<div className="flex flex-row justify-between -mb-[1px] relative items-center gap-2">
 									<div className="flex uppercase py-1 text-current/70">{`脚本`}</div>
 									<div className="flex flex-1 h-[1px] bg-foreground/8"></div>
 								</div>
-								<div className="flex flex-1 flex-col pt-3 rounded-md">
+								<div className="flex flex-1 flex-col pt-3 rounded-md mb-20 md:mb-0">
 									<div className="relative flex flex-col h-full w-full">
 										<textarea
 											id="prompt"
@@ -280,19 +302,35 @@ Emotion: Warm and supportive, conveying empathy and care, ensuring the listener 
 									className="relative w-full !bg-[var(--primary-fm)] min-h-[60px] items-center justify-center"
 									onClick={handleGetAudio}
 								>
-									<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path
-											d="M5 5L19 12L5 19V5Z"
-											stroke="currentColor"
-											fill="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-									<span className="uppercase hidden md:inline pr-3 text-lg">Play</span>
+									{playStatus == PLAY_STATUS.BUSY ? (
+										<div className="overflow-hidden relative w-[32px] h-[32px] align-center">
+											<div className="w-[72px] h-[60px] absolute -top-[14px] -left-[20px]">
+												<img src="/icons/loading.gif" alt="Playing" className="w-[72px] h-[60px]" />
+											</div>
+										</div>
+									) : null}
+									{playStatus == PLAY_STATUS.PLAYING ? (
+										<div className="overflow-hidden w-[32px] h-[32px]">
+											<div className="w-24 h-[32px]">
+												<img src="/icons/playing.gif" alt="Playing" className="w-24 h-[32px]" />
+											</div>
+										</div>
+									) : null}
+									{playStatus == PLAY_STATUS.READY ? (
+										<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M5 5L19 12L5 19V5Z"
+												stroke="currentColor"
+												fill="currentColor"
+												strokeWidth="2"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											/>
+										</svg>
+									) : null}
+									<span className="uppercase hidden md:inline pr-3 text-lg">{playStatus}</span>
 								</CustomButton>
-								{audioUrl ? <audio ref={scriptAudioRef} src="" preload="auto"></audio> : null}
+								{audioUrl ? <audio ref={scriptAudioRef} onEnded={handleUpdatePlayStatusAfterAudioEnd} src="" preload="auto"></audio> : null}
 							</div>
 						</div>
 					</div>

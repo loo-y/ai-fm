@@ -292,7 +292,7 @@ Emotion: Warm and supportive, conveying empathy and care, ensuring the listener 
 									</svg>
 									<span className="uppercase hidden md:inline pr-3 text-lg">Play</span>
 								</CustomButton>
-								<audio ref={scriptAudioRef} src="" preload="auto"></audio>
+								{audioUrl ? <audio ref={scriptAudioRef} src="" preload="auto"></audio> : null}
 							</div>
 						</div>
 					</div>

@@ -2,6 +2,11 @@ import { fetchAudio } from '../../utils/fetches';
 import { type NextRequest } from 'next/server';
 import { EMOTION_MAP } from '../../../shared/types';
 
+// edge
+export const config = {
+	runtime: 'edge',
+};
+
 export async function GET(request: NextRequest) {
 	const headers = request.headers;
 

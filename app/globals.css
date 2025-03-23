@@ -94,7 +94,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --radius: 0.5rem;
-  --page-max-width-fm: 1300px;
+  --page-max-width-fm: 1332px;
   --primary-fm: #ff4a00;
   --background-fm: #ececec;
   --foreground-fm: #222;
@@ -144,6 +144,10 @@
   }
 }
 
+html{
+  font-size: 14px;
+}
+
 body *:focus,
 body *:active,
 body *:hover {
@@ -157,18 +161,19 @@ body .fm{
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
   overflow: auto;
-  overscroll-behavior-y: contain;
+
 }
 
-body, body .fm{
+body, body .fm, .scrollbar-hide{
+  overscroll-behavior: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  overflow: hidden;
 }
 
-body .fm::-webkit-scrollbar, body::-webkit-scrollbar {
+body .fm::-webkit-scrollbar, body::-webkit-scrollbar, .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
 
 body .fm ::before, body .fm ::after{
   box-sizing: border-box;
@@ -199,8 +204,8 @@ body .fm ::before, body .fm ::after{
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   border-radius: var(--radius-md);
   box-shadow: inset 1px 1px 1px 0 rgb(255,255,255),inset -1px -1px 1px 0 rgba(0,0,0,.15),.444584px .444584px .628737px -1px rgba(0,0,0,.26),1.21072px 1.21072px 1.71222px -1.5px rgba(0,0,0,.247),2.6583px 2.6583px 3.75941px -2.25px rgba(0,0,0,.23),5.90083px 5.90083px 8.34503px -3px rgba(0,0,0,.192),10px 10px 21.2132px -3.75px rgba(0,0,0,.056),-.5px -.5px 0 0 rgb(0 0 0/5%);
   padding: 12px;
@@ -261,3 +266,5 @@ body .fm ::before, body .fm ::after{
   bottom: 0;
   background-color: var(--background-fm);
 }
+
+

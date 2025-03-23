@@ -29,8 +29,8 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="fm overflow-y-hidden h-screen ">
-				<div className="max-w-[--page-max-width-fm] pb-32 pt-6 px-5 md:pb-24 selection:bg-primary/2 mx-auto overflow-y-scroll h-full scrollbar-hide">
+			<div className="fm overflow-y-hidden h-screen px-1">
+				<div className="max-w-[var(--page-max-width-fm)] pb-32 pt-6 px-4 md:pb-24 selection:bg-primary/2 mx-auto overflow-y-scroll h-full scrollbar-hide">
 					<header className="flex w-full max-w-(--page-max-width) mx-auto mb-12 md:mb-8">
 						<div className="grid grid-cols-12 gap-x-3">
 							<div className="col-span-2 order-1 mb-8 md:mb-0">
@@ -162,15 +162,9 @@ Emotion: Warm and supportive, conveying empathy and care, ensuring the listener 
 											rows={8}
 											maxLength={999}
 											className="w-full h-full min-h-[220px] resize-none outline-none focus:outline-none bg-screen p-4 rounded-lg shadow-textarea text-[16px] md:text-[14px]"
-											defaultValue={`Hello! I'll help you get to your favorite coffee shop. Let's begin!
+											defaultValue={`感谢您与我们联系。我完全理解您对航班取消的沮丧，我在这里帮助您快速重新预订。
 
-Start by walking straight ahead for about 20 steps. When you reach the crosswalk, wait for the signal, then cross to your left.
-
-Continue walking straight for about 30 steps. You'll pass a bakery on your right.
-
-When you reach the next corner, turn right. Your coffee shop will be just ahead on the left.
-
-Enjoy your coffee! Let me know if you need help on your way back.`}
+我只需要您原始预订的一些细节，比如您的预订确认号或乘客信息。一旦我有了这些信息，我将找到下一个可用的航班，并确保您顺利到达目的地。`}
 										/>
 										<span className="absolute bottom-3 right-4 z-10 opacity-30 hidden sm:block">440</span>
 									</div>
@@ -179,8 +173,8 @@ Enjoy your coffee! Let me know if you need help on your way back.`}
 						</div>
 					</main>
 				</div>
-				<footer className="Footer_Footer__ElFDz py-3 left-0 right-0 px-5">
-					<div className="relative max-w-[--page-max-width-fm] m-auto">
+				<footer className="Footer_Footer__ElFDz py-3 left-0 right-0 px-1">
+					<div className="relative max-w-[var(--page-max-width-fm)] px-4 m-auto">
 						<div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
 							<CustomButton color="tertiary" className="">
 								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -9,6 +9,7 @@ interface CustomButtonProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
 	selected?: boolean;
 	hasLed?: boolean;
 	hasIcon?: boolean;
+	ref?: React.Ref<HTMLDivElement>;
 }
 
 export function CustomButton({
@@ -17,6 +18,7 @@ export function CustomButton({
 	selected = false,
 	hasLed = false,
 	hasIcon = false,
+	ref,
 	className,
 	...props
 }: CustomButtonProps) {
@@ -35,6 +37,7 @@ export function CustomButton({
 
 	return (
 		<div
+			ref={ref}
 			className={cn('Button_Button__u2RFO', className)}
 			data-color={color}
 			data-block=""

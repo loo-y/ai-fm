@@ -1,10 +1,20 @@
 import React from 'react';
 
-export default function CustomIcon({ className, size, icon }: { className?: string; size?: number; icon: string }) {
+export default function CustomIcon({
+	className,
+	size,
+	icon,
+	onClick,
+}: {
+	className?: string;
+	size?: number;
+	icon: string;
+	onClick?: () => void;
+}) {
 	const iconSize = size || 36;
 	const svgCode = (ICONS[icon] || '') as string;
 	if (!svgCode) return null;
-	return <div dangerouslySetInnerHTML={{ __html: svgCode }} className={className || ''} />;
+	return <div dangerouslySetInnerHTML={{ __html: svgCode }} className={className || ''} onClick={onClick} />;
 }
 
 const ICONS: Record<string, string> = {

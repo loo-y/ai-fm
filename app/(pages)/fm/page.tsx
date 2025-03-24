@@ -6,7 +6,9 @@ import { Switcher } from '@/components/ui/switcher';
 import { celebrities, emotionList } from '@/app/shared/constants';
 import _, { set } from 'lodash';
 import CustomIcon from '@/components/custom-icon';
+import Link from 'next/link';
 
+const githubLink = 'https://github.com/loo-y/ai-fm';
 enum PLAY_STATUS {
 	PLAYING = 'STOP',
 	BUSY = 'BUSY',
@@ -130,7 +132,7 @@ export default function Home() {
 		<>
 			<div className="fm overflow-y-hidden h-screen px-1 min-h-[375px]">
 				<div className="max-w-[var(--page-max-width-fm)] pb-32 pt-6 px-4 md:pb-24 selection:bg-[#ff4a00]/20 mx-auto overflow-y-scroll h-full scrollbar-hide">
-					<header className="flex w-full max-w-(--page-max-width) mx-auto mb-12 md:mb-8">
+					<header className="flex w-full max-w-(--page-max-width) mx-auto mb-12 md:mb-8 relative">
 						<div className="grid grid-cols-12 gap-x-3">
 							<div className="col-span-2 order-1 mb-8 md:mb-0">
 								<div className="relative top-[0.0875rem]">
@@ -145,6 +147,11 @@ export default function Home() {
 									</div>
 								</div>
 							</div>
+						</div>
+						<div className="absolute top-1 right-0 ">
+							<Link href={githubLink} target="_blank" rel="noopener noreferrer">
+								<img src="/icons/github.svg" alt="Github" className="w-8 h-8" />
+							</Link>
 						</div>
 					</header>
 

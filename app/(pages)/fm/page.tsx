@@ -14,7 +14,7 @@ enum PLAY_STATUS {
 }
 export default function Home() {
 	const voiceLength = celebrities.length + 1;
-	const voiceGridClass = `grid grid-cols-10 gap-3`;
+	const voiceGridClass = `grid grid-cols-3 md:grid-cols-12 gap-3`;
 	const [selectedVoice, setSelectedVoice] = useState<string>(celebrities[0].id);
 	const [selectedVibe, setSelectedVibe] = useState<string>(emotionList[0].value);
 	const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -34,6 +34,8 @@ export default function Home() {
 				randButton.removeAttribute('data-clicked');
 			}, 150);
 		}
+		// 随机一个voice
+		setSelectedVoice(_.sample(celebrities)?.id || celebrities[0].id);
 	}, []);
 	const handleLoopClick = useCallback(() => {
 		const loopButton = loopButtonRef.current;
@@ -43,6 +45,8 @@ export default function Home() {
 				loopButton.removeAttribute('data-clicked');
 			}, 150);
 		}
+		// 清空情感选择
+		setSelectedVibe('');
 	}, []);
 
 	const handleUpdateScript = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -124,7 +128,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="fm overflow-y-hidden h-screen px-1">
+			<div className="fm overflow-y-hidden h-screen px-1 min-h-[375px]">
 				<div className="max-w-[var(--page-max-width-fm)] pb-32 pt-6 px-4 md:pb-24 selection:bg-[#ff4a00]/20 mx-auto overflow-y-scroll h-full scrollbar-hide">
 					<header className="flex w-full max-w-(--page-max-width) mx-auto mb-12 md:mb-8">
 						<div className="grid grid-cols-12 gap-x-3">
@@ -152,12 +156,9 @@ export default function Home() {
 									<div className="flex flex-1 h-[1px] bg-foreground/8"></div>
 								</div>
 								<div className="flex flex-1 flex-col pt-3 rounded-md">
-									<div className={voiceGridClass}>
+									<div className={`${voiceGridClass}`}>
 										{_.map(celebrities, (celebrity, celebrityIndex) => (
-											<div
-												key={`${celebrity.id}_${celebrityIndex}`}
-												className="col-span-4 sm:col-span-3 md:col-span-2 xl:col-span-1 relative"
-											>
+											<div key={`${celebrity.id}_${celebrityIndex}`} className="col-span-1 md:col-span-2 xl:col-span-1 relative">
 												<CustomButton
 													color="default"
 													selected={selectedVoice === celebrity.id}
@@ -169,7 +170,7 @@ export default function Home() {
 												</CustomButton>
 											</div>
 										))}
-										<div className="col-span-4 sm:col-span-3 md:col-span-2 xl:col-span-1 relative">
+										<div className="col-span-1 md:col-span-2 xl:col-span-1 relative">
 											<CustomButton
 												ref={randomButtonRef}
 												onClick={handleRandomClick}

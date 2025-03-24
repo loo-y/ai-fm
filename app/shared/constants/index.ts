@@ -15,6 +15,16 @@ export const celebrities: Celebrity[] = [
 		name: '一搏',
 	},
 	{
+		id: 'haimianbaobao',
+		speech: 'speech:haimianbaobao001:clwx0imsh004t12vfvu9wsc84:ditfromfrieyiuxotibh',
+		name: '海绵宝宝',
+	},
+	{
+		id: 'lianyushenkong_shenxing',
+		speech: 'speech:lianyushenkong_shenxing001:clwx0imsh004t12vfvu9wsc84:iualtdmmwvltpozrckra',
+		name: '沈星(恋)',
+	},
+	{
 		id: `alex`,
 		name: `亚历克斯`,
 	},

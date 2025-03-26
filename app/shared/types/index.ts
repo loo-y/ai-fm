@@ -8,7 +8,7 @@ interface Emotion {
 export const EMOTION_MAP: Record<string, Emotion> = {
 	happy: { value: 'Happy', desc: '高兴' },
 	sad: { value: 'Sad', desc: '悲伤' },
-	surprised: { value: 'surprised', desc: '惊讶' },
+	surprised: { value: 'Surprised', desc: '惊讶' },
 	angry: { value: 'Angry', desc: '愤怒' },
 	fearful: { value: 'Fearful', desc: '恐惧' },
 	disgusted: { value: 'Disgusted', desc: '厌恶' },

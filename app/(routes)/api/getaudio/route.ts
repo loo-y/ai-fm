@@ -48,8 +48,9 @@ const commonResponse = async ({
 	}
 	try {
 		let audioText = message;
-		if (emotion && EMOTION_MAP?.[emotion]?.desc) {
-			audioText = `你能用${EMOTION_MAP[emotion].desc}的情感说吗？<|endofprompt|>${message}`;
+		const emotionLowerCase = emotion && emotion?.toLowerCase();
+		if (emotionLowerCase && EMOTION_MAP?.[emotionLowerCase]?.desc) {
+			audioText = `你能用${EMOTION_MAP[emotionLowerCase].desc}的情感说吗？<|endofprompt|>${message}`;
 		}
 		const {
 			audioBuffer,

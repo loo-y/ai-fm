@@ -8,6 +8,7 @@ export const fetchAudio = async ({
 	format,
 	apiKey,
 	apiEndPoint,
+	speed,
 }: {
 	audioText: string;
 	voice?: string;
@@ -15,6 +16,7 @@ export const fetchAudio = async ({
 	format?: string;
 	apiKey?: string;
 	apiEndPoint?: string;
+	speed?: number;
 }): Promise<{ audioBuffer?: ArrayBuffer | null; status: boolean; message: string }> => {
 	const speech_api_key = apiKey || env.SPEECH_API_KEY || '';
 	const speech_api_endpoint = apiEndPoint || env.SPEECH_API_ENDPOINT || '';
@@ -50,10 +52,11 @@ export const fetchAudio = async ({
 				response_format: format || `mp3`,
 				sample_rate: sampleRate || defaultSampleRate,
 				stream: false,
+				speed: speed || 1,
 			}),
 		});
 		const result = await response.arrayBuffer();
-		console.log(`🐹🐹🐹 fetchAudioPCM result legnth`, result.byteLength);
+		console.log(`🐹🐹🐹 fetchAudioPCM result legnth`, result.byteLength, `speed: ${speed}`);
 		return {
 			audioBuffer: result,
 			status: true,

@@ -7,6 +7,7 @@ import { celebrities, emotionList } from '@/app/shared/constants';
 import _, { set } from 'lodash';
 import CustomIcon from '@/components/custom-icon';
 import Link from 'next/link';
+import { Slider } from '@/components/ui/slider';
 
 const githubLink = 'https://github.com/loo-y/ai-fm';
 enum PLAY_STATUS {
@@ -17,6 +18,7 @@ enum PLAY_STATUS {
 export default function Home() {
 	const voiceLength = celebrities.length + 1;
 	const voiceGridClass = `grid grid-cols-3 md:grid-cols-12 gap-3`;
+	const [voiceSpeed, setVoiceSpeed] = useState<number>(1);
 	const [selectedVoice, setSelectedVoice] = useState<string>(celebrities[0].id);
 	const [selectedVibe, setSelectedVibe] = useState<string>(emotionList[0].value);
 	const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -76,6 +78,7 @@ export default function Home() {
 				voice: selectedVoice,
 				voice_value: selectedCeleb.speech || '',
 				emotion: selectedVibe || '',
+				voice_speed: voiceSpeed || 1,
 			});
 			// 模拟返回的音频URL，实际项目中这应该来自API响应
 			setAudioUrl(audioUrl);
@@ -241,6 +244,13 @@ Emotion: Warm and supportive, conveying empathy and care, ensuring the listener 
 										/> */}
 									</div>
 								</div>
+								{/* <div className="flex flex-row justify-between relative items-center gap-2 mt-5 mb-1">
+									<div className="flex uppercase py-1 text-current/70 items-center ">{`语速`}<span className=' lowercase pl-2 text-sm'>{`  ${voiceSpeed.toFixed(2)} x`}</span></div>
+									<div className="flex flex-1 h-[1px] bg-foreground/8"></div>
+								</div>
+								<div className="flex flex-1 flex-col pt-3 rounded-md mb-3">
+									<Slider defaultValue={[1]} max={4} min={0.25} step={0.05} onValueChange={(value)=>{console.log(value);setVoiceSpeed(value?.[0] || 1)}} rangeClassName='!bg-[#222]/80' />
+								</div> */}
 							</div>
 							<div className="flex flex-1 flex-col shrink-0 mb-10">
 								<div className="flex flex-row justify-between -mb-[1px] relative items-center gap-2">
@@ -353,11 +363,13 @@ const fetchAudio = async ({
 	voice,
 	voice_value,
 	emotion,
+	voice_speed,
 }: {
 	message: string;
 	voice: string;
 	voice_value?: string;
 	emotion?: string;
+	voice_speed?: number;
 }) => {
 	try {
 		// 替换为你的 API 端点
@@ -367,6 +379,7 @@ const fetchAudio = async ({
 			voice,
 			emotion,
 			voice_value,
+			voice_speed,
 		};
 		const response = await fetch(apiUrl, {
 			method: 'POST', // 或者 'POST'，根据你的 API 配置

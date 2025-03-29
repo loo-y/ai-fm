@@ -16,15 +16,16 @@ export async function GET(request: NextRequest) {
 	const emotion = searchParams.get('emotion') || '';
 	const input_voice_value = searchParams.get('voice_value') || '';
 	const voice_value = input_voice_value;
-	return commonResponse({ message, voice: voice_value || voice, emotion, apiKey, apiEndPoint });
+	const voice_speed = searchParams.get('voice_speed') || '';
+	return commonResponse({ message, voice: voice_value || voice, emotion, apiKey, apiEndPoint, voice_speed });
 }
 export async function POST(request: Request) {
 	const headers = request.headers;
 	const apiKey = headers.get('x-api-key') || '';
 	const apiEndPoint = headers.get('x-api-endpoint') || '';
-	const { message, emotion, voice, voice_value: input_voice_value } = await (request.json() as Promise<Record<string, any>>);
+	const { message, emotion, voice, voice_value: input_voice_value, voice_speed } = await (request.json() as Promise<Record<string, any>>);
 	const voice_value = input_voice_value;
-	return commonResponse({ message, voice: voice_value || voice, emotion, apiKey, apiEndPoint });
+	return commonResponse({ message, voice: voice_value || voice, emotion, apiKey, apiEndPoint, voice_speed });
 }
 
 const commonResponse = async ({
@@ -33,12 +34,14 @@ const commonResponse = async ({
 	emotion,
 	apiKey,
 	apiEndPoint,
+	voice_speed,
 }: {
 	message: string;
 	voice: string;
 	emotion?: string;
 	apiKey?: string;
 	apiEndPoint?: string;
+	voice_speed?: string;
 }) => {
 	if (!message || !voice) {
 		return new Response(JSON.stringify({ eerror: 'message and voice are missing in headers' }), {
@@ -61,6 +64,7 @@ const commonResponse = async ({
 			apiKey,
 			apiEndPoint,
 			voice,
+			speed: (!!voice_speed && Number(voice_speed)) || 1,
 		});
 		if (!status) {
 			if (responseMessage) {
